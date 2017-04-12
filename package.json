@@ -1,0 +1,25 @@
+{
+	"name": "bz-def",
+	"version": "1.0.0",
+	"main": "./build/bz-def.js",
+	"bin": {
+		"bz-def": "./build/bz-def.js"
+	},
+	"scripts": {
+		"start": "node ./build/bz-def"
+	},
+	"keywords": [
+		"Bizagi Studio",
+		"Custom Connectors"
+	],
+	"author": "Carlos Camilo Lobo",
+	"license": "ISC",
+	"dependencies": {
+		"mkpath": "^1.0.0"
+	},
+	"devDependencies": {
+		"@types/mkpath": "^0.1.29",
+		"@types/node": "^7.0.12"
+	},
+	"description": "Builds the def/connector.json and actions.js file for your Bizagi Studio's connector"
+}
