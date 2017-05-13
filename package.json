@@ -6,7 +6,8 @@
 		"bz-def": "./build/bz-def.js"
 	},
 	"scripts": {
-		"start": "node ./build/bz-def"
+		"start": "node ./build/bz-def",
+		"dev": "tsc"
 	},
 	"keywords": [
 		"Bizagi Studio",
