@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "outDir": "./build"
+        "outDir": "./build",
+        "removeComments": true,
+        "watch": true
     }
 }

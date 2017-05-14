@@ -12,38 +12,58 @@ import { IConfig } from './@types/app/config/IBzConfig';
 import { IDefinition, IAuthProperty, IAction } from './@types/bizagi/IBizagiStudio';
 import { IDefinitionInfo } from './@types/app/config/primitives/IDefinitionInfo';
 
+import { gray, cyan, green, red, yellow, white } from 'chalk';
+const { log } = console;
+
 const configurationPath = resolve('./bzconfig.json');
 const { name, description, url, icon, auth, actions }: IConfig = require(configurationPath);
 
 try {
-    console.info('Building your connection definition...');
+    log(yellow.bold(`Starting definition process ... ✈`));
     
-    const authDefinition: IAuthProperty[] = AuthFactory(auth);
-    const actionsDefinition: IAction[] = ActionFactory(actions);
-    const definitionInfo: IDefinitionInfo = {
+    log(cyan(`Getting auth properties...`));
+    const authDef: IAuthProperty[] = AuthFactory(auth);
+    const authProps = authDef.map(prop => prop.name).reduce((item, acc) => `${item} ${acc}`);
+    log(gray(`✎ Connector authentication is given by:`), white.bold(`${authProps}`));
+
+    log(cyan(`Getting connector actions...`));
+    const actionsDef: IAction[] = ActionFactory(actions);
+    const actionsProps = actionsDef.map(prop => prop.name).reduce((item, acc) => `${item} ${acc}`);
+    log(gray(`✎ The Implemented actions are:`), white.bold(`${actionsProps}`));
+
+    log(cyan(`Creating connector contract...`));
+    const defInfo: IDefinitionInfo = {
         id: getId(),
         name,
         description,
         url,
         icon,
-        auth: authDefinition,
-        actions: actionsDefinition
+        auth: authDef,
+        actions: actionsDef
     };
-    const def = DefinitionFactory(definitionInfo);
+    const def = DefinitionFactory(defInfo);
+    log(green.bold(`✔ Connector contract created`));
 
-    sync('def', parseInt('0777',8));
+    log(cyan(`Logging contract...`));
+    
+    sync(`def`, parseInt(`0777`, 8));
+    logConnectorDef(def);
+    logConnectorActions(actions);
+    log(green.bold(`✿ Connector contract logged successfully ✿`));
 
-    const connectorStream = createWriteStream('def/connector.json');
-    connectorStream.write(JSON.stringify(def, null, '\t'));
-    connectorStream.end();
-
-    const connectorActions = getActions(actions);
-    const actionsStream = createWriteStream('def/actions.js');
-    actionsStream.write(`module.exports = {\n${connectorActions}\n};`);
-    actionsStream.end();
-
-    console.info('Connector definition built.');
 } catch(err) {
-    console.error('An error ocurred while building your connector definition', err.message);
+    log(red.bold(`✘ An error ocurred while building your connector definition.\n${err.message}`));
 }
 
+function logConnectorDef(def) {
+    const stream = createWriteStream(`def/connector.json`);
+    stream.write(JSON.stringify(def, null, '\t'));
+    stream.end();
+}
+
+function logConnectorActions(actions) {
+    const connectorActions = getActions(actions);
+    const stream = createWriteStream(`def/actions.js`);
+    stream.write(`module.exports = {\n${connectorActions}\n};`);
+    stream.end();
+}
