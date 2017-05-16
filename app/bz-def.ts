@@ -3,10 +3,15 @@ import { createWriteStream } from 'fs';
 import { resolve } from 'path';
 import { sync } from 'mkpath';
 
+import PresenterFactory from './lib/ioPresenter';
 import ActionFactory from './lib/factories/ActionFactory';
-import DefinitionFactory from './lib/factories/DefinitionFactory';
+import types from  './@types/bizagi/ioTypes';
+import templates from './@types/bizagi/elements';
+
 import AuthFactory from './lib/factories/AuthFactory';
-import { getId, getActions } from './lib/utils';
+import DefinitionFactory from './lib/factories/DefinitionFactory';
+
+import { getId, getActions, toCamelCase, toBase64 } from './lib/utils';
 
 import { IConfig } from './@types/app/config/IBzConfig';
 import { IDefinition, IAuthProperty, IAction } from './@types/bizagi/IBizagiStudio';
@@ -27,7 +32,10 @@ try {
     log(gray(`✎ Connector authentication is given by:`), white.bold(`${authProps}`));
 
     log(cyan(`Getting connector actions...`));
-    const actionsDef: IAction[] = ActionFactory(actions);
+    const presenter = PresenterFactory({types, templates, toBase64});
+    const actionsDef: IAction[] = ActionFactory
+        .init({ presenter, getId, toCamelCase })
+        .build(actions);
     const actionsProps = actionsDef.map(prop => prop.name).reduce((item, acc) => `${item} ${acc}`);
     log(gray(`✎ The Implemented actions are:`), white.bold(`${actionsProps}`));
 
