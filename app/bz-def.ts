@@ -20,10 +20,10 @@ import { IDefinitionInfo } from './@types/app/config/primitives/IDefinitionInfo'
 import { gray, cyan, green, red, yellow, white } from 'chalk';
 const { log } = console;
 
-const configurationPath = resolve('./bzconfig.json');
-const { name, description, url, icon, auth, actions }: IConfig = require(configurationPath);
-
 try {
+    const configurationPath = resolve('./bzconfig.json');
+    const { name, description, url, icon, auth, actions }: IConfig = require(configurationPath);
+    
     log(yellow.bold(`Starting definition process ... ✈`));
     
     log(cyan(`Getting auth properties...`));
