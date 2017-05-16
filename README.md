@@ -1,7 +1,7 @@
 # Bz-Def
-Builds the `def/connector.json` and `actions.js` file for your Bizagi Studio's connector.
+Builds the `def/connector.json` and `actions.js` file for your Bizagi Studio's custom connector.
 
-## Why?:
+## Why?
 This package covers a required step for the "Bizagi Studio Connector Editor". It is meant to be used with the bz-zip library.
 
 ## Installation:
@@ -16,12 +16,11 @@ npm install --save bz-def
 ~~~~
 
 ## How to use:
-Since this replaces the connector editor, you will need to suply the required information in a JSON file called `bzconfig.json`, and should be placed on the executing folder.
+This replaces the connector editor, that means you will need to suply the required information (authdata and actions) in a JSON file called `bzconfig.json`. That file should be placed on the executing folder.
 
-Tip: Some properties should not be longer than one word:
-* The connector's name should be either TitleCased or camelCased.
-* The connector's auth properties' name should be either TitleCased or camelCased.
-* The connector's actions' name should be dash-cased.
+### Notes: 
+* The connector's name and the connector's auth properties' must be either TitleCased or camelCased.
+* The connector's actions' name must be dash-cased.
 
 ### `bzconfig.json` structure:
 ~~~~
@@ -129,4 +128,4 @@ To build the connector's definition you only need to type on your terminal:
 ~~~~
 bz-def
 ~~~~
-A def file will be created on the executing folder. It will contain an `action.js` and a `connector.json` file. These are required for the connector to be interpreted by Bizagi Studio.
+A def directory will be created on the executing directory. It will contain an `action.js` and a `connector.json` file. These are required for the connector to be interpreted by Bizagi Studio.
